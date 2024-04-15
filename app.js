@@ -14,7 +14,7 @@ app.use(express.json())
 connectDatabase(process.env.MONGO_URI)
 
 app.get("/",(req,res)=>{
-    res.send(<h1>Hello I am alive</h1>)
+    res.send("<h1>Hello I am alive</h1>")
 })
 
 app.use("/api/user",userRoute)
