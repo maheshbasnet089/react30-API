@@ -13,6 +13,10 @@ app.use(express.json())
 
 connectDatabase(process.env.MONGO_URI)
 
+app.get("/",(req,res)=>{
+    res.send(<h1>Hello I am alive</h1>)
+})
+
 app.use("/api/user",userRoute)
 
 const PORT = process.env.PORT || 3000
