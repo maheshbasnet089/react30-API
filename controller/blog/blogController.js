@@ -35,6 +35,33 @@ class BlogController{
             data
         })
     }
+    async getSingleBlog(req,res){
+        const id = req.params.id 
+    
+        if(!id){
+            return res.status(400).json({
+                message : 'Please provide id'
+            })
+        }
+        const data = await Blog.findById(id).populate('userId','-password')
+        res.status(200).json({
+            message : 'Blogs fetched successfully',
+            data
+        })
+    }
+    async deleteBlog(req,res){
+        const id = req.params.id 
+        if(!id){
+            return res.status(400).json({
+                message : 'Please provide id'
+            })
+        }
+      await Blog.findByIdAndDelete(id)
+        res.status(200).json({
+            message : 'Blogs deleted successfully',
+        
+        })
+    }
 }
 
 module.exports = new BlogController()
