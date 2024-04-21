@@ -58,17 +58,24 @@ class BlogController{
                 message : 'Please provide id'
             })
         }
-        const data = await Blog.findById(id) 
-        if(data.userId != userId){
+        const data = await Blog.findById(id).populate('userId')
+ 
+        console.log(data.userId.equals(userId)) 
+        // return 
+
+        if(data.userId.equals(userId)){
+            await Blog.findByIdAndDelete(id)
+            res.status(200).json({
+                message : 'Blogs deleted successfully',
+            
+            })
+          
+        }else{
             return res.status(403).json({
                 message : "You arenot the author"
             })
         }
-      await Blog.findByIdAndDelete(id)
-        res.status(200).json({
-            message : 'Blogs deleted successfully',
-        
-        })
+   
     }
 
     async updateBlog(req,res){
