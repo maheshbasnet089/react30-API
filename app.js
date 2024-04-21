@@ -18,6 +18,8 @@ app.get("/",(req,res)=>{
     res.send("<h1>Hello I am alive</h1>")
 })
 
+
+
 app.use("/api/user",userRoute)
 app.use("/api/user",blogRoute)
 app.use(express.static('uploads'))

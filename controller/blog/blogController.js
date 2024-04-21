@@ -62,6 +62,39 @@ class BlogController{
         
         })
     }
+
+    async updateBlog(req,res){
+        const id = req.params.id 
+    const {title,description,category,subtitle} = req.body
+        const oldDatas = await Blog.findById(id)
+        let fileName;
+        if(req.file){
+            
+        const oldImagePath = oldDatas.imageUrl
+       
+        const localHostUrlLength = process.env.BASE_URL.length
+        const newOldImagePath = oldImagePath.slice(localHostUrlLength)
+        fs.unlink(`uploads/${newOldImagePath}`,(err)=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log("File Deleted Successfully")
+            }
+        })
+        fileName =  process.env.BASE_URL + req.file.filename
+    }
+    await Blog.findByIdAndUpdate(id,{
+        title,
+        description,
+        category,
+        userId,
+        subtitle,
+        imageUrl : fileName
+    })
+    res.status(200).json({
+        message : "Blog Updated Successfully"
+    })
+    }
 }
 
 module.exports = new BlogController()
