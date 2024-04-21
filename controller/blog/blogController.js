@@ -51,9 +51,17 @@ class BlogController{
     }
     async deleteBlog(req,res){
         const id = req.params.id 
+        const userId = req.userId 
+
         if(!id){
             return res.status(400).json({
                 message : 'Please provide id'
+            })
+        }
+        const data = await Blog.findById(id) 
+        if(data.userId != userId){
+            return res.status(403).json({
+                message : "You arenot the author"
             })
         }
       await Blog.findByIdAndDelete(id)
