@@ -87,7 +87,6 @@ class BlogController{
         title,
         description,
         category,
-        userId,
         subtitle,
         imageUrl : fileName
     })
