@@ -1,5 +1,6 @@
 const Blog = require("../../model/blogModel");
 
+const fs  = require('fs')
 class BlogController{
     async createBlog(req,res){
         let fileName ;
