@@ -83,7 +83,7 @@ class BlogController{
         const userId = req.userId 
         const id = req.params.id 
     const {title,description,category,subtitle} = req.body
-        const oldDatas = await Blog.findById(id)
+        const oldDatas = await Blog.findById(id).populate('userId')
         if(oldDatas.userId.equals(userId)){
             let fileName;
             if(req.file){
