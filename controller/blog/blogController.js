@@ -80,35 +80,44 @@ class BlogController{
     }
 
     async updateBlog(req,res){
+        const userId = req.userId 
         const id = req.params.id 
     const {title,description,category,subtitle} = req.body
         const oldDatas = await Blog.findById(id)
-        let fileName;
-        if(req.file){
-            
-        const oldImagePath = oldDatas.imageUrl
-       
-        const localHostUrlLength = process.env.BASE_URL.length
-        const newOldImagePath = oldImagePath.slice(localHostUrlLength)
-        fs.unlink(`uploads/${newOldImagePath}`,(err)=>{
-            if(err){
-                console.log(err)
-            }else{
-                console.log("File Deleted Successfully")
-            }
+        if(oldDatas.userId.equals(userId)){
+            let fileName;
+            if(req.file){
+                
+            const oldImagePath = oldDatas.imageUrl
+           
+            const localHostUrlLength = process.env.BASE_URL.length
+            const newOldImagePath = oldImagePath.slice(localHostUrlLength)
+            fs.unlink(`uploads/${newOldImagePath}`,(err)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log("File Deleted Successfully")
+                }
+            })
+            fileName =  process.env.BASE_URL + req.file.filename
+        }
+        await Blog.findByIdAndUpdate(id,{
+            title,
+            description,
+            category,
+            subtitle,
+            imageUrl : fileName
         })
-        fileName =  process.env.BASE_URL + req.file.filename
-    }
-    await Blog.findByIdAndUpdate(id,{
-        title,
-        description,
-        category,
-        subtitle,
-        imageUrl : fileName
-    })
-    res.status(200).json({
-        message : "Blog Updated Successfully"
-    })
+         res.status(200).json({
+            message : "Blog Updated Successfully"
+        })
+        }else{
+            return res.status(403).json({
+                message : "You arenot the author"
+            })
+        }
+        
+   
     }
 }
 
