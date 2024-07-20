@@ -10,13 +10,14 @@ class UserController{
                 message : "Please provide email,password,username"
             })
         }
-        await User.create({
+        const data = await User.create({
             username,
             email,
             password : bcrypt.hashSync(password,8)
         })
         res.status(201).json({
-            message : "User registered successfully"
+            message : "User registered successfully", 
+            data
         })
     }
     async login(req,res){
@@ -45,7 +46,8 @@ class UserController{
 
         res.status(200).json({
             message : "User logged in successfully",
-            token
+            token, 
+            data : userData
         })
 
     }else{
